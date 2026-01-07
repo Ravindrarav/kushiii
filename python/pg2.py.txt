@@ -1,0 +1,39 @@
+print("=== Welcome to FitLife Membership Advisor ===")
+age=int(input("Enter your age:"))
+goal=input("Enter your fitness goal(weighloss/muscle/cardio/general):").lower()
+budget=int(input("Enter your monthly budget(in):"))
+print("\n Analyzing your inputs...\n")
+if age<18:
+    print("You qualify only for the teen fitness plan.")1
+    if budget>=800:
+        print("Recommended plan:Teen Basic-800/month")
+    else:
+        print("Budget is too low for any plan.Consider home workouts.")
+else:
+    if goal=="weighloss":
+        if budget>=2000:
+            print("Recommended plan:Weight Loss Prp(Zumba+Diet Plan+gym)-2000/month")
+        elif budget>=1200:
+            print("Recommended Plan:Weight Loss Basic(Cardio+Trainer)-1200/month")
+        else:
+            print("Budget too low.Try walking/jogging daily.")
+    elif goal=="muscle":
+        if budget>=2500:
+            print("Recommended Plan:Muscle Gain Basic-ultimate(Heavy Gym+personal Trainer)-2500/month")
+        elif budget>=1500:
+            print("Recommended Plan:muscle Gain Basic-1500/month")
+        else:
+            print("Budget too low.try calisthenics at home.")
+    elif goal=="cardio":
+        if budget>=1000:
+            print("Recommended Plan:Cardio Unlimited(Treadmill+Cycling)-1000/month")
+        else:
+            print("Budget too low for cardio plan.Try skipping rope.")
+    elif goal=="general":
+        if budget>=800:
+            print("Recommended Plan:General Ftness Plan-800/month")
+        else:
+            print("budget too low.Consider home exercises.")
+    else:
+            print("Unknown goal entered.Please try again.")
+print("\n Thank you for using FitLife Membership Advisor!")
