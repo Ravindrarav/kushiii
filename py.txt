@@ -1,0 +1,564 @@
+pg1
+
+# Simple Shopping Cart Program
+
+subtotal = 0
+
+n = int(input("Enter number of items: "))
+
+for i in range(n):
+    name = input("Enter item name: ")
+    price = float(input("Enter item price: "))
+    qty = int(input("Enter quantity: "))
+
+    total = price * qty
+    subtotal = subtotal + total
+
+print("Subtotal =", subtotal)
+
+discount = subtotal * 0.10
+after_discount = subtotal - discount
+
+gst = after_discount * 0.05
+final = after_discount + gst
+
+print("Discount =", discount)
+print("GST =", gst)
+print("Final Bill =", final)
+
+
+
+pg2
+
+
+# Fitness Membership Program
+
+age = int(input("Enter age: "))
+goal = input("Enter goal (weightloss/muscle/cardio/general): ")
+budget = int(input("Enter budget: "))
+
+if age < 18:
+    print("Teen Plan Recommended")
+
+else:
+    if goal == "weightloss":
+        if budget >= 2000:
+            print("Weight Loss Pro Plan")
+        else:
+            print("Weight Loss Basic Plan")
+
+    elif goal == "muscle":
+        if budget >= 2500:
+            print("Muscle Gain Plan")
+        else:
+            print("Basic Muscle Plan")
+
+    elif goal == "cardio":
+        print("Cardio Plan Recommended")
+
+    elif goal == "general":
+        print("General Fitness Plan")
+
+    else:
+        print("Invalid goal")
+
+
+pg3
+
+# Library books list
+books = ["Python", "DBMS", "OS", "CN"]
+taken = []
+
+while True:
+    print("\n1.Display Books")
+    print("2.Issue Book")
+    print("3.Return Book")
+    print("4.Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        print("Available books:", books)
+
+    elif choice == "2":
+        name = input("Enter book name: ")
+        if name in books:
+            books.remove(name)
+            taken.append(name)
+            print("Book issued successfully")
+        else:
+            print("Book not available")
+
+    elif choice == "3":
+        name = input("Enter book name: ")
+        if name in taken:
+            taken.remove(name)
+            books.append(name)
+            print("Book returned successfully")
+        else:
+            print("You didn’t take this book")
+
+    elif choice == "4":
+        print("Thank you!")
+        break
+
+    else:
+        print("Invalid choice")
+
+
+pg 4c
+
+class InvalidAgeError(Exception):
+    pass
+
+while True:
+    print("\nMENU")
+    print("1. ATM Withdrawal")
+    print("2. Mobile Recharge")
+    print("3. Product Selection")
+    print("4. Open File")
+    print("5. Login System")
+    print("6. Ticket Booking")
+    print("7. Payment Gateway")
+    print("8. Age Check")
+    print("9. Exit")
+
+    try:
+        choice = int(input("Enter choice: "))
+    except ValueError:
+        print("Enter number only!")
+        continue
+
+
+    if choice == 1:
+        try:
+            balance = int(input("Enter balance: "))
+            users = int(input("Enter users: "))
+            print("Amount per user =", balance/users)
+        except ZeroDivisionError:
+            print("Users cannot be zero!")
+
+
+    elif choice == 2:
+        try:
+            amount = int(input("Enter recharge amount: "))
+            print("Recharge successful")
+        except ValueError:
+            print("Invalid amount!")
+
+
+    elif choice == 3:
+        products = ["Mobile", "Laptop", "Headphones"]
+        print(products)
+        try:
+            i = int(input("Enter index: "))
+            print("Selected:", products[i])
+        except:
+            print("Invalid selection!")
+
+
+    elif choice == 4:
+        try:
+            f = open("invoice.txt")
+            print(f.read())
+        except FileNotFoundError:
+            print("File not found!")
+
+
+    elif choice == 5:
+        try:
+            name = input("Username: ")
+            pwd = int(input("Password: "))
+            print("Login success")
+        except:
+            print("Login error!")
+
+
+    elif choice == 6:
+        try:
+            seats = int(input("Seats: "))
+        except ValueError:
+            print("Invalid seats!")
+        else:
+            print("Booking confirmed")
+
+
+    elif choice == 7:
+        try:
+            amt = int(input("Payment amount: "))
+            print("Payment done")
+        except:
+            print("Invalid payment!")
+        finally:
+            print("Session closed")
+
+
+    elif choice == 8:
+        try:
+            age = int(input("Enter age: "))
+            if age < 18:
+                raise InvalidAgeError
+            print("Access granted")
+        except InvalidAgeError:
+            print("Age must be 18+")
+        except:
+            print("Invalid age!")
+
+
+    elif choice == 9:
+        print("Thank you!")
+        break
+
+    else:
+        print("Wrong choice!")
+
+pg 4b# movie_module.py
+
+# function to show movies
+def show_movies():
+    print("1. Christmas Karma")
+    print("2. My Secret Santa")
+    print("3. Oh What Fun")
+
+# function to return ticket price
+def get_price(choice):
+    if choice == 1:
+        return 120
+    elif choice == 2:
+        return 180
+    elif choice == 3:
+        return 250
+
+# function to print receipt
+def receipt(name, movie, seats, total):
+    print("\n--- Booking Receipt ---")
+    print("Name:", name)
+    print("Movie:", movie)
+    print("Seats:", seats)
+    print("Total Amount:", total)
+
+main.py
+# main.py
+
+import movie_module as mv
+
+name = input("Enter your name: ")
+
+mv.show_movies()
+choice = int(input("Select movie: "))
+
+movies = ["Christmas Karma", "My Secret Santa", "Oh What Fun"]
+selected_movie = movies[choice-1]
+
+seats = int(input("Enter number of seats: "))
+
+price = mv.get_price(choice)
+total = price * seats
+
+mv.receipt(name, selected_movie, seats, total)
+
+pg5
+
+# Grocery List Operations
+
+grocery_list = ["rice", "pasta", "bread", "oats"]
+
+while True:
+    print("\n1.Display  2.Add  3.Insert  4.Remove")
+    print("5.Update   6.Search  7.Sort  8.Reverse  9.Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        print("List:", grocery_list)
+
+    elif choice == "2":
+        item = input("Enter item: ")
+        grocery_list.append(item)
+        print("Updated List:", grocery_list)
+
+    elif choice == "3":
+        item = input("Enter item: ")
+        pos = int(input("Enter position: "))
+        grocery_list.insert(pos, item)
+        print("Updated List:", grocery_list)
+
+    elif choice == "4":
+        item = input("Enter item: ")
+        grocery_list.remove(item)
+        print("Updated List:", grocery_list)
+
+    elif choice == "5":
+        old = input("Enter old item: ")
+        new = input("Enter new item: ")
+        i = grocery_list.index(old)
+        grocery_list[i] = new
+        print("Updated List:", grocery_list)
+
+    elif choice == "6":
+        item = input("Enter item to search: ")
+        if item in grocery_list:
+            print("Item found")
+        else:
+            print("Item not found")
+
+    elif choice == "7":
+        grocery_list.sort()
+        print("Sorted List:", grocery_list)
+
+    elif choice == "8":
+        grocery_list.reverse()
+        print("Reversed List:", grocery_list)
+
+    elif choice == "9":
+        print("Exit program")
+        break
+
+pg6 
+
+# Initial tuple
+schedule = ("datastructures", "networks", "os", "python", "java")
+
+while True:
+    print("\n1.Display  2.Length  3.Access  4.Search")
+    print("5.Count  6.Index  7.Slice  8.Sort")
+    print("9.Add  10.Min&Max  11.Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == "1":
+        print(schedule)
+
+    elif choice == "2":
+        print("Length:", len(schedule))
+
+    elif choice == "3":
+        i = int(input("Enter index: "))
+        print(schedule[i])
+
+    elif choice == "4":
+        sub = input("Enter subject: ")
+        print(sub in schedule)
+
+    elif choice == "5":
+        sub = input("Enter subject: ")
+        print(schedule.count(sub))
+
+    elif choice == "6":
+        sub = input("Enter subject: ")
+        print(schedule.index(sub))
+
+    elif choice == "7":
+        s = int(input("Start index: "))
+        e = int(input("End index: "))
+        print(schedule[s:e])
+
+    elif choice == "8":
+        print(tuple(sorted(schedule)))
+
+    elif choice == "9":
+        sub = input("Enter new subject: ")
+        temp = list(schedule)
+        temp.append(sub)
+        schedule = tuple(temp)
+        print(schedule)
+
+    elif choice == "10":
+        print("Min:", min(schedule))
+        print("Max:", max(schedule))
+
+    elif choice == "11":
+        print("Exit program")
+        break
+
+    else:
+        print("Wrong choice")
+
+pg7
+
+# Employee Salary Database
+
+employees = {
+    1001: 35000,
+    1002: 42000,
+    1003: 50000
+}
+
+while True:
+    print("\n1.Display")
+    print("2.Add")
+    print("3.Update")
+    print("4.Delete")
+    print("5.Search")
+    print("6.Count")
+    print("7.Exit")
+
+    choice = int(input("Enter choice: "))
+
+    if choice == 1:
+        print(employees)
+
+    elif choice == 2:
+        id = int(input("Enter ID: "))
+        sal = int(input("Enter Salary: "))
+        employees[id] = sal
+        print("Added")
+
+    elif choice == 3:
+        id = int(input("Enter ID: "))
+        sal = int(input("Enter new Salary: "))
+        employees[id] = sal
+        print("Updated")
+
+    elif choice == 4:
+        id = int(input("Enter ID: "))
+        employees.pop(id)
+        print("Deleted")
+
+    elif choice == 5:
+        id = int(input("Enter ID: "))
+        print("Salary =", employees.get(id))
+
+    elif choice == 6:
+        print("Total Employees =", len(employees))
+
+    elif choice == 7:
+        print("Exit Program")
+        break
+
+    else:
+        print("Invalid choice")
+
+
+pg8
+
+message = "Hello food delivery team"
+
+while True:
+    print("\n--- String Operations Menu ---")
+    print("1. Display message")
+    print("2. Length of message")
+    print("3. Convert to UPPERCASE")
+    print("4. Convert to lowercase")
+    print("5. Replace word")
+    print("6. Find position of word")
+    print("7. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == '1':
+        print("Message:", message)
+
+    elif choice == '2':
+        print("Length:", len(message))
+
+    elif choice == '3':
+        print("Uppercase:", message.upper())
+
+    elif choice == '4':
+        print("Lowercase:", message.lower())
+
+    elif choice == '5':
+        old = input("Enter word to replace: ")
+        new = input("Enter new word: ")
+        message = message.replace(old, new)
+        print("Updated message:", message)
+
+    elif choice == '6':
+        word = input("Enter word to find: ")
+        print("Position:", message.find(word))
+
+    elif choice == '7':
+        print("Program Ended")
+        break
+
+    else:
+        print("Invalid choice")
+
+
+pg9 
+
+# Training participants
+cyber_security = {101, 102, 103, 104}
+data_analytics = {103, 104, 105, 106}
+
+while True:
+    print("\n1.Display")
+    print("2.Add employee")
+    print("3.Remove employee")
+    print("4.Intersection")
+    print("5.Union")
+    print("6.Difference")
+    print("7.Symmetric Difference")
+    print("8.Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == '1':
+        print("Cyber Security:", cyber_security)
+        print("Data Analytics:", data_analytics)
+
+    elif choice == '2':
+        emp = int(input("Enter employee ID: "))
+        cyber_security.add(emp)
+        print("Added successfully")
+
+    elif choice == '3':
+        emp = int(input("Enter employee ID: "))
+        cyber_security.discard(emp)
+        print("Removed successfully")
+
+    elif choice == '4':
+        print("Common employees:",
+              cyber_security.intersection(data_analytics))
+
+    elif choice == '5':
+        print("All employees:",
+              cyber_security.union(data_analytics))
+
+    elif choice == '6':
+        print("Only Cyber Security:",
+              cyber_security.difference(data_analytics))
+
+    elif choice == '7':
+        print("Only one training:",
+              cyber_security.symmetric_difference(data_analytics))
+
+    elif choice == '8':
+        print("Program Ended")
+        break
+
+    else:
+        print("Invalid choice")
+
+pg10
+
+# Base class
+class Item:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def apply_discount(self):
+        return self.price   # No discount
+
+
+# Subclass Electronics
+class Electronics(Item):
+    def apply_discount(self):
+        return self.price * 0.90   # 10% discount
+
+
+# Subclass Clothing
+class Clothing(Item):
+    def apply_discount(self):
+        return self.price * 0.80   # 20% discount
+
+
+# Main program
+e = Electronics("Laptop", 1000)
+c = Clothing("T-Shirt", 50)
+
+print("Laptop discounted price:", e.apply_discount())
+print("T-Shirt discounted price:", c.apply_discount())
+
