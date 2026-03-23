@@ -1,0 +1,56 @@
+DISCOUNT_RATE = 0.10
+GST_RATE = 0.05
+subtotal = 0
+cart_details = ""
+
+print('========== SHOPPING CART SYSTEM ==========')
+print("Categories available:")
+print("1. GROCERY")
+print("2. ELECTRONICS")
+print("3. CLOTHING")
+
+num_items = int(input("\nEnter how many items you want to add: "))
+
+for i in range(1, num_items + 1):
+    print(f"\nEnter details for item {i}:")
+    
+    category_choice = int(input("Choose category (1.GROCERY, 2.ELECTRONICS, 3.CLOTHING): "))
+    
+    if category_choice == 1:
+        category = "GROCERY"
+    elif category_choice == 2:
+        category = "ELECTRONICS"
+    elif category_choice == 3:
+        category = "CLOTHING"
+    else:
+        category = "OTHERS"
+
+    item_name = input("Item name: ")
+    item_price = float(input("Item price: "))
+    item_quantity = int(input("Quantity: "))
+
+    item_total = item_price * item_quantity
+    subtotal += item_total
+
+    cart_details += (
+        f"\nItem {i}:\n"
+        f"Category: {category}\n"
+        f"Name: {item_name}\n"
+        f"Price: {item_price}\n"
+        f"Quantity: {item_quantity}\n"
+        f"Total: {item_total}\n"
+    )
+
+discount_amount = subtotal * DISCOUNT_RATE
+after_discount = subtotal - discount_amount
+gst_amount = after_discount * GST_RATE
+final_total = after_discount + gst_amount
+
+print('\n========== FINAL BILL ==========')
+print(cart_details)
+print('Subtotal:', subtotal)
+print('Discount (10%):', discount_amount)
+print('After Discount:', after_discount)
+print('GST (5%):', gst_amount)
+print('Final Bill Amount:', final_total)
+print('\n=========== THANK YOU FOR SHOPPING! ===========')

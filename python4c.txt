@@ -1,0 +1,109 @@
+class InvalidAgeError(Exception):
+    pass
+
+while True:
+    print("\n==== ONLINE SERVICE MENU ====")
+    print("1. ATM Withdrawal (ZeroDivisionError)")
+    print("2. Mobile Recharge Amount (ValueError)")
+    print("3. Product Selection (IndexError)")
+    print("4. Opening Invoice File (FileNotFoundError)")
+    print("5. Login System (Multiple Exceptions)")
+    print("6. Ticket Booking (try-except-else)")
+    print("7. Payment Gateway (try-except-finally)")
+    print("8. Age Verification (User-Defined-Exception)")
+    print("9. Exit")
+
+    try:
+        choice = int(input("Enter your choice: "))
+    except ValueError:
+        print("Please enter a valid menu number!")
+        continue
+
+    if choice == 1:
+        print("\n----ATM Withdrawal System----")
+        try:
+            balance = int(input("Enter account balance: "))
+            users = int(input("Enter number of users sharing account: "))
+            amount_per_user = balance / users
+            print("Amount per user:", amount_per_user)
+        except ZeroDivisionError:
+            print("Error: Number of users cannot be zero!")
+
+    elif choice == 2:
+        print("\n----Mobile Recharge System----")
+        try:
+            amount = int(input("Enter recharge amount: "))
+            print("Recharge of Rs", amount, "successful!")
+        except ValueError:
+            print("Error: Recharge amount must be a number!")
+
+    elif choice == 3:
+        print("\n----Online Shopping Product Selection----")
+        products = ["Mobile", "Laptop", "Headphones"]
+        print("Available products:", products)
+        try:
+            index = int(input("Select product index: "))
+            print("You selected:", products[index])
+        except IndexError:
+            print("Error: Invalid product selection!")
+        except ValueError:
+            print("Error: Enter a valid number!")
+
+    elif choice == 4:
+        print("\n----Invoice Download System----")
+        try:
+            file = open("Invoice.txt", "r")
+            print(file.read())
+            file.close()
+        except FileNotFoundError:
+            print("Error: Invoice file not found!")
+
+    elif choice == 5:
+        print("\n----User Login System----")
+        try:
+            username = input("Enter username: ")
+            password = int(input("Enter numeric password: "))
+            print("Login successful!")
+        except ValueError:
+            print("Error: Password must be numeric!")
+        except Exception:
+            print("Error: Login failed due to unknown issue!")
+
+    elif choice == 6:
+        print("\n----Movie Ticket Booking----")
+        try:
+            seats = int(input("Enter number of seats: "))
+            print("Seats booked:", seats)
+        except ValueError:
+            print("Error: Seat count must be numeric!")
+        else:
+            print("Booking confirmed successfully!")
+
+    elif choice == 7:
+        print("\n----Online Payment Gateway----")
+        try:
+            amount = int(input("Enter payment amount: "))
+            print("Payment of Rs", amount, "processed")
+        except ValueError:
+            print("Error: Invalid payment amount!")
+        finally:
+            print("Transaction session closed.")
+
+    elif choice == 8:
+        print("\n----Age Verification for Service----")
+        try:
+            age = int(input("Enter your age: "))
+            if age < 18:
+                raise InvalidAgeError
+            print("Access granted!")
+        except InvalidAgeError:
+            print("Error: Age must be 18 or above!")
+        except ValueError:
+            print("Error: Age must be numeric!")
+
+    elif choice == 9:
+        print("\nThank you for using the online service system!")
+        break
+
+    else:
+        print("Invalid option! Please choose again.")

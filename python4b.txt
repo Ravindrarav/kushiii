@@ -1,0 +1,56 @@
+def show_movies():
+    print("\n Available Movies:")
+    print("1.Christmas Karma")
+    print("2.My Secret Santa")
+    print("3.Oh.What.Fun.")
+def show_timings():
+    print("\n Show Timings:")
+    print("1.10:00 AM")
+    print("2.2:00 PM")
+    print("3.6:00 PM")
+    print("4.9:00 PM")
+def show_ticket_types():
+    print("\n Ticket Categories:")
+    print("1.Regular -rs120")
+    print("2.Premium -rs180")
+    print("3.VIP -rs250")
+def get_ticket_price(type_choice):
+    if type_choice==1:
+        return 120
+    elif type_choice==2:
+        return 180
+    elif type_choice==3:
+        return 250
+def print_receipt(name, movie, timing, ticket_type, seats, total_amount):
+    print("\n===BOOKING RECEIPT===")
+    print(f"Name:{name}")
+    print(f"Movie:{movie}")
+    print(f"ShowTime:{timing}")
+    print(f"TicketType:{ticket_type}")
+    print(f"No of seat:{seats}")
+    print(f"Total Amount:rs{total_amount}")
+    print("Booking Status:CONFIRMED")
+    print("========")
+
+
+
+
+import movie_module as mv
+print("===Welcome Phoenix Mall of Asia Bengaluru===")
+name = input("Enter your name:")
+mv.show_movies()
+movie_choice = int(input("Select a movie:"))
+movie_name = ["Christmas Karna","My Secret Santa","Oh.What.Fun."]
+selected_movie = movie_name[movie_choice -1]
+mv.show_timings()
+time_choice = int(input("Select show time:"))
+timings = ["10:00 AM","2:00 PM","6:00 PM","9:00 PM"]
+selected_time = timings[time_choice-1]
+mv.show_ticket_types()
+ticket_choice = int(input("Select ticket type:"))
+ticket_types = ["Regular","Premium","VIP"]
+ticket_type = ticket_types[ticket_choice -1]
+seats = int(input("Enter number of seats:"))
+price = mv.get_ticket_price(ticket_choice)
+total = price*seats
+mv.print_receipt(name, selected_movie, selected_time, ticket_type, seats, total)

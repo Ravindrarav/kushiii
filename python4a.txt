@@ -1,0 +1,49 @@
+import cab_module as cab
+print("=== CITY CAB BOOKING SYSTEM ===")
+
+name = input("Enter your name: ")
+pickup = input("Enter pickup location: ")
+drop = input("Enter drop location: ")
+distance = float(input("Enter distance between locations (in km): "))
+
+cab.show_cab_types()
+cab_choice = int(input("\nSelect your cab type: "))
+
+cab_name = cab.get_cab_name(cab_choice)
+amount = cab.calculate_fare(cab_choice, distance)
+
+cab.print_receipt(name, pickup, drop, cab_name, distance, amount)
+
+
+
+
+
+def show_cab_types():
+    print("\n Available Cab Types:")
+    print("1.Mini -rs.10 per km")
+    print("2.Sedan -rs.15 per km")
+    print("3.SUV -rs.20 per km")
+def calculate_fare(cab_choice,distance):
+    if cab_choice==1:
+        return distance*10
+    elif cab_choice==2:
+        return distance*15
+    elif cab_choice==3:
+        return distance*20
+def get_cab_name(cab_choice):
+    if cab_choice==1:
+        return "Mini"
+    elif cab_choice==2:
+        return "Sedan"
+    elif cab_choice==3:
+        return "SUV"
+def print_receipt(name,pickup,drop,cab_name,distance,total_amount):
+    print("\n====CAB BOOKING RECEIPT====")
+    print(f"Passenger Name:{name}")
+    print(f"Pickup Point:{pickup}")
+    print(f"Drop Point:{drop}")
+    print(f"Cab Type:{cab_name}")
+    print(f"Distance:{distance}km")
+    print(f"Total Fare:rs{total_amount}")
+    print("Status:BOOKED SUCCESSFULLY")
+    print("===========")

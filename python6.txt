@@ -1,0 +1,67 @@
+
+schedule=("datastructures","networks","operatingsystem","python","java")
+def display_menu():
+    print("\n-----Tuple Operations Menu------")
+    print("1. Display schedule")
+    print("2. Length of tuple")
+    print("3. Access subject by index")
+    print("4. Search subject")
+    print("5. Count subject occurrences")
+    print("6. Get index of subject")
+    print("7. Slice the tuple")
+    print("8. Sort subjects(A-Z)")
+    print("9. Add a subject(convert to list)")
+    print("10. Find max and min (alphabetical)")
+    print("11. Exit")
+    print("---------------------------")
+    
+while True:
+    display_menu()
+    choice=input("Enter your choice(1-11):")
+    if choice=='1':
+        print("Weekly Schedule:",schedule)
+    elif choice=='2':
+        print("Total subjects:",len(schedule))
+    elif choice=='3':
+        index=int(input("Enter index:"))
+        if 0<=index<len(schedule):
+            print("Subject:",schedule[index])
+        else:
+            print("Invalid index")
+    elif choice=='4':
+        subject=input("Enter subject to search:")
+        if subject in schedule:
+            print(f"{subject} is in the schedule")
+        else:
+            print(f"{subject} not found")
+    elif choice=='5':
+        subject=input("Enter subject to count:")
+        print(f"Occurance of {subject}: {schedule.count(subject)}")
+    elif choice=='6':
+        subject=input("Enter subjcet to find index:")
+        if subject in schedule:
+            print(f"Index of {subject}: {schedule.index(subject)}")
+        else:
+            print("Subject not found")
+    elif choice=='7':
+        start=int(input("Enter start index:"))
+        end=int(input("Ente end index:"))
+        print("Sliced tuple:",schedule[start:end])
+    elif choice=='8':
+        print("Sorted Schedule:",tuple(sorted(schedule)))
+    elif choice=='9':
+        subject=input("Enter new subject to add:")
+        temp_list=list(schedule)
+        temp_list.append(subject)
+        print("Temp list:",temp_list)
+        print("Subject added successfully")
+        print("Schedule Tuple:",schedule)
+    elif choice=='10':
+        print("Alphabetically smallest:",min(schedule))
+        print("alphabetically largest:",max(schedule))
+    elif choice=='11':
+        print("Exiting program")
+        break
+        
+    else:
+        print("Invalid choice! Please enter 1-11.")

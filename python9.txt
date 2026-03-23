@@ -1,0 +1,74 @@
+cyber_security = {101, 102, 103, 104}
+data_analytics = {103, 104, 105, 106}
+
+def display_menu():
+    print("\n=== Bank Training Programs (Set Operations) ===")
+    print("1. Display training participants")
+    print("2. Add employee to cyber security training")
+    print("3. Remove employee from cyber security training")
+    print("4. Employees attending both training (Intersection)")
+    print("5. Employees attending any training (Union)")
+    print("6. Employees only in cyber security training (Difference)")
+    print("7. Employees in exactly one training (Symmetric Difference)")
+    print("8. Check subset and superset")
+    print("9. Total participants in each training")
+    print("10. Clear all training records")
+    print("11. Exit")
+    print("============================================")
+
+display_menu()
+
+while True:
+    choice = input("Enter your choice (1-11): ")
+
+    if choice == '1':
+        print("\nCyber Security Training:", cyber_security)
+        print("Data Analytics Training:", data_analytics)
+
+    elif choice == '2':
+        emp_id = int(input("Enter employee ID to add: "))
+        cyber_security.add(emp_id)
+        print("Employee added to cyber security training.")
+
+    elif choice == '3':
+        emp_id = int(input("Enter employee ID to remove: "))
+        cyber_security.discard(emp_id)
+        print("Employee removed (if present).")
+
+    elif choice == '4':
+        print("Employees attending both trainings:",
+              cyber_security.intersection(data_analytics))
+
+    elif choice == '5':
+        print("Employees attending any training:",
+              cyber_security.union(data_analytics))
+
+    elif choice == '6':
+        print("Employees only in cyber security training:",
+              cyber_security.difference(data_analytics))
+
+    elif choice == '7':
+        print("Employees in exactly one training:",
+              cyber_security.symmetric_difference(data_analytics))
+
+    elif choice == '8':
+        print("Cyber security subset of data analytics?",
+              cyber_security.issubset(data_analytics))
+        print("Cyber security superset of data analytics?",
+              cyber_security.issuperset(data_analytics))
+
+    elif choice == '9':
+        print("Cyber security participants:", len(cyber_security))
+        print("Data analytics participants:", len(data_analytics))
+
+    elif choice == '10':
+        cyber_security.clear()
+        data_analytics.clear()
+        print("All training records cleared.")
+
+    elif choice == '11':
+        print("Exiting Bank Training System.")
+        break
+
+    else:
+        print("Invalid choice! Please enter a number between 1 and 11.")

@@ -1,0 +1,77 @@
+import pymysql
+conn=pymysql.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="company"
+)
+cursor=conn.cursor()
+#Create a table if it doesnt exist
+def create_empployee():
+    table_creation_query="""
+    CREATE TABLE IF NOT EXISTS employees(name VARCHAR(255), position VARCHAR(5), salary INT(5), firm VARCHAR(255))
+    """
+    cursor.execute(table_creation_query)
+    conn.commit()
+    print("Employee table has been created successfully!")
+    
+ #Function to add a new employee
+def add_employee():
+    name=input("Enter employee name:")
+    position=input("Enter employee position:")
+    salary=float(input("Enter employee salary:"))
+    firm=input("Enter employee firm:")
+
+    #insert data into the 'employees' table
+    cursor.execute("INSERT INTO employees(name,position,salary,firm) VALUES(%s,%s,%s,%s)",(name,position,salary,firm))
+    conn.commit()
+    print("Employee added successfully!")
+
+#Function to retrieve employee deatils
+def get_employee_details():
+    cursor.execute("SELECT * FROM employees")
+    employee=cursor.fetchall()
+    print(employee)
+    
+#function to update employee information
+def update_employee():
+    position=input("Enter employee position:")
+    new_salary=float(input("Enter new salary:"))
+    cursor.execute("UPDATE employees SET salary=%s WHERE position=%s",(new_salary,position))
+    conn.commit()
+    print("Employee information updated successfully!")
+    
+def delete_employee():
+    position=input("Enter employee position to delete:")
+    cursor.execute("DELETE FROM employees WHERE position=%s",(position))
+    conn.commit()
+    print("Employee deleted successfully!")
+
+while True:
+    print("***************")
+    print("\n Employee database of a firm!")
+    print("**************")
+    print("\n 1. Create Table employee")
+    print("\n 2. Add employee")
+    print("\n 3. Get employee deatils and display")
+    print("\n 4. Update Employee")
+    print("\n 5. Delete employee")
+    print("\n 6. Exit")
+    choice=input("Enter your choice:")
+    if choice=='1':
+        create_empployee()
+    elif choice=='2':
+        add_employee()
+    elif choice=='3':
+        get_employee_details()
+    elif choice=='4':
+        update_employee()
+    elif choice=='5':
+        delete_employee()
+    elif choice=='6':
+        print("exited successfully!")
+        break
+    else:
+        print("Invalid choice. Please try again")
+conn.close()
+

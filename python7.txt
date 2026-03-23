@@ -1,0 +1,67 @@
+employees={
+    1001:35000,
+    1002:42000,
+    1003:50000,
+    1004:65000,
+    1005:70000
+}
+def display_menu():
+    print("\n===Employees Salary Database====")
+    print("1.Display all employee records")
+    print("2.Add new employee")
+    print("3.Update employee salary")
+    print("4.Remove employee")
+    print("5.Search employee salary")
+    print("6.Display employee IDs")
+    print("7.Display salaries")
+    print("8.Total number of employees")
+    print("9.Clear all records")
+    print("10.Exit")
+    print("==============")
+display_menu()
+while True:
+          choice=int(input("Enter your choice(1-10):"))
+          if choice==1:
+              print("\n Employee records:")
+              for emp_id,salary in employees.items():
+                  print("EmployeeID:",emp_id,"Salary:rs",salary)
+          elif choice==2:
+              emp_id=int(input("Enter employeeID:"))
+              salary=int(input("Enter salary:"))
+              employees[emp_id]=salary
+              print("Employee added successfully.")
+          elif choice==3:
+              emp_id=int(input("Enter EmployeeID to update:"))
+              if emp_id in employees:
+                  salary=int(input("Enter new salary:"))
+                  employees[emp_id]=salary
+                  print("Salary updates successfully.")
+              else:
+                  print("Employee not found.")
+          elif choice==4:
+              emp_id=int(input("Enter employeeID to remove:"))
+              if emp_id in employees:
+                  employees.pop(emp_id)
+                  print("Employee removed successfully.")
+              else:
+                  print("Employee not found.")
+          elif choice==5:
+              emp_id=int(input("Enter employeeID to search:"))
+              if emp_id in employees:
+                  print("Salary:rs",employees.get(emp_id))
+              else:
+                  print("Employee not found.")
+          elif choice==6:
+              print("EmployeeIDs:",list(employees.keys()))
+          elif choice==7:
+              print("Salaries:",list(employees.values()))
+          elif choice==8:
+              print("Total Employees:",len(employees))
+          elif choice==9:
+              employees.clear()
+              print("All employee records cleared.")
+          elif choice==10:
+              print("Exiting Employee Salary Database.")
+              break
+          else:
+              print("Invalid choice!Please enter 1-10.")
