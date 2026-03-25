@@ -1,0 +1,402 @@
+1.Singly Linked List
+(Create, Insert, Traverse)
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+int data;
+struct node *next;
+};
+
+struct node *head=NULL;
+
+void insert(int x){
+struct node *newnode;
+
+newnode=(struct node*)malloc(sizeof(struct node));
+
+newnode->data=x;
+newnode->next=head;
+
+head=newnode;
+}
+
+void display(){
+struct node *temp=head;
+
+while(temp!=NULL){
+printf("%d -> ",temp->data);
+temp=temp->next;
+}
+}
+
+int main(){
+
+int n,x,i;
+
+printf("Enter number of nodes: ");
+scanf("%d",&n);
+
+for(i=1;i<=n;i++){
+printf("Enter data: ");
+scanf("%d",&x);
+
+insert(x);
+}
+
+display();
+}
+
+
+
+2.Singly Linked List
+(Create, Delete, Traverse)
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+int data;
+struct node *next;
+};
+
+struct node *head=NULL;
+
+void insert(int x){
+
+struct node *newnode;
+
+newnode=(struct node*)malloc(sizeof(struct node));
+
+newnode->data=x;
+newnode->next=head;
+
+head=newnode;
+}
+
+void delete(){
+
+struct node *temp=head;
+
+head=head->next;
+
+free(temp);
+}
+
+void display(){
+
+struct node *temp=head;
+
+while(temp!=NULL){
+
+printf("%d -> ",temp->data);
+
+temp=temp->next;
+}
+}
+
+int main(){
+
+int n,x,i;
+
+printf("Enter number of nodes: ");
+scanf("%d",&n);
+
+for(i=1;i<=n;i++){
+
+printf("Enter data: ");
+scanf("%d",&x);
+
+insert(x);
+}
+
+delete();
+
+display();
+}
+
+
+3.Stack using Pointers
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+int data;
+struct node *next;
+};
+
+struct node *top=NULL;
+
+void push(int x){
+
+struct node *newnode;
+
+newnode=(struct node*)malloc(sizeof(struct node));
+
+newnode->data=x;
+newnode->next=top;
+
+top=newnode;
+}
+
+void pop(){
+
+struct node *temp=top;
+
+printf("Deleted=%d\n",temp->data);
+
+top=top->next;
+
+free(temp);
+}
+
+void display(){
+
+struct node *temp=top;
+
+while(temp!=NULL){
+
+printf("%d\n",temp->data);
+
+temp=temp->next;
+}
+}
+
+int main(){
+
+int n,x,i;
+
+printf("Enter elements: ");
+scanf("%d",&n);
+
+for(i=1;i<=n;i++){
+
+scanf("%d",&x);
+
+push(x);
+}
+
+pop();
+
+display();
+}
+
+
+4.Queue Operations
+#include<stdio.h>
+
+int queue[5],front=-1,rear=-1;
+
+void enqueue(int x){
+
+if(rear==4){
+
+printf("Queue full");
+return;
+}
+
+if(front==-1)
+front=0;
+
+rear++;
+
+queue[rear]=x;
+}
+
+void dequeue(){
+
+printf("Deleted=%d\n",queue[front]);
+
+front++;
+
+}
+
+void display(){
+
+for(int i=front;i<=rear;i++)
+
+printf("%d ",queue[i]);
+}
+
+int main(){
+
+int n,x,i;
+
+printf("Enter number of elements: ");
+
+scanf("%d",&n);
+
+for(i=1;i<=n;i++){
+
+scanf("%d",&x);
+
+enqueue(x);
+}
+
+dequeue();
+
+display();
+}
+
+
+5.Insertion Sort
+#include<stdio.h>
+
+int main(){
+
+int a[10],n,i,j,temp;
+
+printf("Enter size: ");
+
+scanf("%d",&n);
+
+printf("Enter elements:\n");
+
+for(i=0;i<n;i++)
+
+scanf("%d",&a[i]);
+
+for(i=1;i<n;i++){
+
+temp=a[i];
+
+j=i-1;
+
+while(temp<a[j] && j>=0){
+
+a[j+1]=a[j];
+
+j--;
+}
+
+a[j+1]=temp;
+}
+
+printf("Sorted array:\n");
+
+for(i=0;i<n;i++)
+
+printf("%d ",a[i]);
+}
+
+
+6.Linear Search + Binary Search
+#include<stdio.h>
+
+int main(){
+
+int a[10],n,i,key,low,high,mid;
+
+printf("Enter size: ");
+
+scanf("%d",&n);
+
+printf("Enter elements:\n");
+
+for(i=0;i<n;i++)
+
+scanf("%d",&a[i]);
+
+printf("Enter search key: ");
+
+scanf("%d",&key);
+
+/* Linear Search */
+
+for(i=0;i<n;i++){
+
+if(a[i]==key){
+
+printf("Linear Search Found at position %d\n",i+1);
+
+break;
+}
+}
+
+/* Binary Search */
+
+low=0;
+
+high=n-1;
+
+while(low<=high){
+
+mid=(low+high)/2;
+
+if(a[mid]==key){
+
+printf("Binary Search Found at position %d",mid+1);
+
+break;
+}
+
+else if(a[mid]<key)
+
+low=mid+1;
+
+else
+
+high=mid-1;
+}
+}
+
+
+7.Postfix Evaluation
+#include<stdio.h>
+#include<math.h>
+
+int stack[20],top=-1;
+
+void push(int x){
+
+stack[++top]=x;
+}
+
+int pop(){
+
+return stack[top--];
+}
+
+int main(){
+
+char exp[20];
+
+int i,a,b,result;
+
+printf("Enter postfix expression: ");
+
+scanf("%s",exp);
+
+for(i=0;exp[i]!='\0';i++){
+
+if(isdigit(exp[i]))
+
+push(exp[i]-48);
+
+else{
+
+b=pop();
+
+a=pop();
+
+switch(exp[i]){
+
+case '+': push(a+b); break;
+
+case '-': push(a-b); break;
+
+case '*': push(a*b); break;
+
+case '/': push(a/b); break;
+}
+}
+}
+
+result=pop();
+
+printf("Result=%d",result);
+}
+

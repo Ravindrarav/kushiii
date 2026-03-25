@@ -1,0 +1,322 @@
+1.Circular Linked List (Insert + Traverse)
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+
+int data;
+
+struct node *next;
+
+};
+
+struct node *head=NULL,*temp;
+
+void insert(int x){
+
+struct node *newnode;
+
+newnode=(struct node*)malloc(sizeof(struct node));
+
+newnode->data=x;
+
+if(head==NULL){
+
+head=newnode;
+
+newnode->next=head;
+}
+
+else{
+
+temp=head;
+
+while(temp->next!=head)
+
+temp=temp->next;
+
+temp->next=newnode;
+
+newnode->next=head;
+}
+}
+
+void display(){
+
+temp=head;
+
+do{
+
+printf("%d ",temp->data);
+
+temp=temp->next;
+
+}while(temp!=head);
+}
+
+int main(){
+
+int n,x,i;
+
+scanf("%d",&n);
+
+for(i=1;i<=n;i++){
+
+scanf("%d",&x);
+
+insert(x);
+}
+
+display();
+}
+
+
+ 2.Circular Linked List (Delete)
+
+
+void delete(){
+
+temp=head;
+
+while(temp->next->next!=head)
+
+temp=temp->next;
+
+free(temp->next);
+
+temp->next=head;
+}
+
+(add inside previous program)
+
+
+
+3.Deque Program
+
+
+#include<stdio.h>
+
+int dq[5],front=-1,rear=-1;
+
+void insertrear(int x){
+
+rear++;
+
+dq[rear]=x;
+}
+
+void deletefront(){
+
+printf("Deleted=%d",dq[front]);
+
+front++;
+}
+
+int main(){
+
+int x;
+
+front=0;
+
+insertrear(10);
+
+insertrear(20);
+
+deletefront();
+}
+
+
+4.Quick Sort
+
+
+#include<stdio.h>
+
+void quick(int a[],int low,int high){
+
+int i=low,j=high,pivot=a[low],temp;
+
+while(i<j){
+
+while(a[i]<=pivot)
+
+i++;
+
+while(a[j]>pivot)
+
+j--;
+
+if(i<j){
+
+temp=a[i];
+
+a[i]=a[j];
+
+a[j]=temp;
+}
+}
+
+temp=a[low];
+
+a[low]=a[j];
+
+a[j]=temp;
+
+quick(a,low,j-1);
+
+quick(a,j+1,high);
+}
+
+int main(){
+
+int a[10],n,i;
+
+scanf("%d",&n);
+
+for(i=0;i<n;i++)
+
+scanf("%d",&a[i]);
+
+quick(a,0,n-1);
+
+for(i=0;i<n;i++)
+
+printf("%d ",a[i]);
+}
+
+
+5.Infix → Postfix Conversion
+
+
+#include<stdio.h>
+#include<ctype.h>
+
+char stack[20];
+
+int top=-1;
+
+void push(char x){
+
+stack[++top]=x;
+}
+
+char pop(){
+
+return stack[top--];
+}
+
+int main(){
+
+char exp[20],post[20];
+
+int i,j=0;
+
+scanf("%s",exp);
+
+for(i=0;exp[i]!='\0';i++){
+
+if(isalnum(exp[i]))
+
+post[j++]=exp[i];
+
+else
+
+push(exp[i]);
+}
+
+while(top!=-1)
+
+post[j++]=pop();
+
+post[j]='\0';
+
+printf("%s",post);
+}
+
+
+
+6.Binary Tree Traversals
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+
+int data;
+
+struct node *left,*right;
+
+};
+
+struct node* newnode(int x){
+
+struct node *temp;
+
+temp=(struct node*)malloc(sizeof(struct node));
+
+temp->data=x;
+
+temp->left=temp->right=NULL;
+
+return temp;
+}
+
+void inorder(struct node *root){
+
+if(root!=NULL){
+
+inorder(root->left);
+
+printf("%d ",root->data);
+
+inorder(root->right);
+}
+}
+
+void preorder(struct node *root){
+
+if(root!=NULL){
+
+printf("%d ",root->data);
+
+preorder(root->left);
+
+preorder(root->right);
+}
+}
+
+void postorder(struct node *root){
+
+if(root!=NULL){
+
+postorder(root->left);
+
+postorder(root->right);
+
+printf("%d ",root->data);
+}
+}
+
+int main(){
+
+struct node *root;
+
+root=newnode(10);
+
+root->left=newnode(20);
+
+root->right=newnode(30);
+
+printf("Inorder: ");
+
+inorder(root);
+
+printf("\nPreorder: ");
+
+preorder(root);
+
+printf("\nPostorder: ");
+
+postorder(root);
+}
