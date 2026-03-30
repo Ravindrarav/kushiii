@@ -1,0 +1,465 @@
+tcp server
+
+import java.io.*;
+import java.net.*;
+
+public class TCPServer {
+    public static void main(String args[]) {
+        try {
+            ServerSocket ss = new ServerSocket(5000);
+            System.out.println("Server Waiting...");
+
+            Socket s = ss.accept();
+
+            DataInputStream dis =
+            new DataInputStream(s.getInputStream());
+
+            String msg = dis.readUTF();
+
+            System.out.println("Client says: " + msg);
+
+            ss.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+
+client
+
+import java.io.*;
+import java.net.*;
+
+public class TCPClient {
+    public static void main(String args[]) {
+        try {
+            Socket s = new Socket("localhost",5000);
+
+            DataOutputStream dos =
+            new DataOutputStream(s.getOutputStream());
+
+            dos.writeUTF("Hello Server");
+
+            dos.flush();
+            dos.close();
+            s.close();
+
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+
+udp server
+
+
+import java.net.*;
+
+public class UDPServer {
+    public static void main(String args[]) {
+        try {
+            DatagramSocket ds =
+            new DatagramSocket(5000);
+
+            byte b[] = new byte[1024];
+
+            DatagramPacket dp =
+            new DatagramPacket(b,b.length);
+
+            ds.receive(dp);
+
+            String msg =
+            new String(dp.getData());
+
+            System.out.println("Client: "+msg);
+
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+
+client
+
+import java.net.*;
+
+public class UDPClient {
+    public static void main(String args[]) {
+        try {
+            DatagramSocket ds =
+            new DatagramSocket();
+
+            String msg="Hello UDP Server";
+
+            byte b[]=msg.getBytes();
+
+            InetAddress ia=
+            InetAddress.getLocalHost();
+
+            DatagramPacket dp=
+            new DatagramPacket(b,b.length,ia,5000);
+
+            ds.send(dp);
+
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+
+
+RMI Program
+
+import java.rmi.*;
+
+public interface AddInterface extends Remote {
+int add(int x,int y) throws RemoteException;
+}
+
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class AddImpl extends UnicastRemoteObject
+implements AddInterface {
+
+AddImpl() throws RemoteException {}
+
+public int add(int x,int y) {
+return x+y;
+}
+}
+
+
+server
+
+import java.rmi.*;
+
+public class AddServer {
+
+public static void main(String args[]) {
+
+try {
+
+AddImpl obj=new AddImpl();
+
+Naming.rebind("ADD",obj);
+
+System.out.println("Server Ready");
+
+} catch(Exception e) {
+
+System.out.println(e);
+
+}
+}
+}
+
+client
+
+import java.rmi.*;
+
+public class AddClient {
+
+public static void main(String args[]) {
+
+try {
+
+AddInterface obj=
+(AddInterface)Naming.lookup("rmi://localhost/ADD");
+
+System.out.println("Sum="+obj.add(5,10));
+
+} catch(Exception e) {
+
+System.out.println(e);
+
+}
+}
+}
+
+
+
+Swing Program
+
+
+import javax.swing.*;
+
+public class SwingDemo {
+
+public static void main(String args[]) {
+
+JFrame f=new JFrame("Swing Example");
+
+JLabel l=new JLabel("Welcome Ravindra");
+
+l.setBounds(80,100,200,30);
+
+f.add(l);
+
+f.setSize(300,300);
+
+f.setLayout(null);
+
+f.setVisible(true);
+
+}
+}
+
+
+JDBC CRUD Program
+
+create database studentdb;
+use studentdb;
+
+create table student(
+id int,
+name varchar(20)
+);
+
+
+import java.sql.*;
+
+public class CRUDExample {
+
+public static void main(String args[]) {
+
+try {
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+Connection con=
+DriverManager.getConnection(
+"jdbc:mysql://localhost:3306/studentdb",
+"root","root");
+
+Statement stmt=con.createStatement();
+
+/* INSERT */
+
+stmt.executeUpdate(
+"insert into student values(1,'Ravi')");
+
+/* UPDATE */
+
+stmt.executeUpdate(
+"update student set name='Kiran' where id=1");
+
+/* DELETE */
+
+stmt.executeUpdate(
+"delete from student where id=1");
+
+/* SELECT */
+
+ResultSet rs=
+stmt.executeQuery("select * from student");
+
+while(rs.next())
+
+System.out.println(
+rs.getInt(1)+" "+rs.getString(2));
+
+con.close();
+
+} catch(Exception e) {
+
+System.out.println(e);
+
+}
+}
+}
+
+
+
+
+
+
+Servlet Using Cookies
+
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class CookieServlet extends HttpServlet {
+
+public void doGet(
+HttpServletRequest req,
+HttpServletResponse res)
+
+throws IOException,ServletException {
+
+Cookie c=new Cookie("user","Ravi");
+
+res.addCookie(c);
+
+PrintWriter out=res.getWriter();
+
+out.println("Cookie Created Successfully");
+
+}
+}
+
+
+
+Servlet Using HttpSession
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SessionServlet extends HttpServlet {
+
+public void doGet(
+HttpServletRequest req,
+HttpServletResponse res)
+
+throws IOException,ServletException {
+
+HttpSession session=req.getSession();
+
+session.setAttribute("name","Ravi");
+
+PrintWriter out=res.getWriter();
+
+out.println("Session Created");
+
+}
+}
+
+
+
+JSP Calculator Program
+
+<html>
+<body>
+
+<h2>Simple JSP Calculator</h2>
+
+<form method="post">
+
+Number 1:
+<input type="text" name="n1"/>
+
+<br><br>
+
+Number 2:
+<input type="text" name="n2"/>
+
+<br><br>
+
+<input type="submit" name="add" value="Add"/>
+<input type="submit" name="sub" value="Subtract"/>
+<input type="submit" name="mul" value="Multiply"/>
+<input type="submit" name="div" value="Divide"/>
+
+</form>
+
+<%
+
+String a = request.getParameter("n1");
+String b = request.getParameter("n2");
+
+if(a!=null && b!=null)
+{
+
+double x = Double.parseDouble(a);
+double y = Double.parseDouble(b);
+
+if(request.getParameter("add")!=null)
+{
+out.println("Addition = " + (x+y));
+}
+
+if(request.getParameter("sub")!=null)
+{
+out.println("Subtraction = " + (x-y));
+}
+
+if(request.getParameter("mul")!=null)
+{
+out.println("Multiplication = " + (x*y));
+}
+
+if(request.getParameter("div")!=null)
+{
+if(y!=0)
+out.println("Division = " + (x/y));
+else
+out.println("Cannot divide by zero");
+}
+
+}
+
+%>
+
+</body>
+</html>
+
+
+
+
+
+Servlet + JDBC Program
+
+create table user(
+id int,
+name varchar(20)
+);
+
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+
+public class DBServlet extends HttpServlet {
+
+public void doGet(
+HttpServletRequest req,
+HttpServletResponse res)
+
+throws IOException,ServletException {
+
+PrintWriter out=res.getWriter();
+
+try {
+
+Class.forName("com.mysql.cj.jdbc.Driver");
+
+Connection con=
+DriverManager.getConnection(
+"jdbc:mysql://localhost:3306/studentdb",
+"root","root");
+
+Statement stmt=con.createStatement();
+
+ResultSet rs=
+stmt.executeQuery("select * from user");
+
+while(rs.next())
+
+out.println(
+rs.getInt(1)+" "+rs.getString(2));
+
+con.close();
+
+}
+
+catch(Exception e)
+
+{
+
+out.println(e);
+
+}
+
+}
+}
+
+
