@@ -562,3 +562,323 @@ c = Clothing("T-Shirt", 50)
 print("Laptop discounted price:", e.apply_discount())
 print("T-Shirt discounted price:", c.apply_discount())
 
+
+pg11
+
+# Function to read employee data and calculate salary
+def read_employee_data(file_name):
+    file = open(file_name, 'r')
+    lines = file.readlines()
+
+    employee_data = []
+
+    for line in lines:
+        name, hours, wages = line.strip().split(',')
+        salary = float(hours) * float(wages)
+        employee_data.append(name + " : " + str(salary))
+
+    file.close()
+    return employee_data
+
+
+# Function to write payroll data to output file
+def write_payroll(file_name, employee_data):
+    file = open(file_name, 'w')
+
+    for data in employee_data:
+        file.write(data + "\n")
+
+    file.close()
+
+
+# File names
+input_file = "employee_data.txt"
+output_file = "payroll_output.txt"
+
+
+# Processing data
+employee_data = read_employee_data(input_file)
+write_payroll(output_file, employee_data)
+
+
+# Display input file
+print("----- Employee Data -----")
+file = open(input_file, 'r')
+print(file.read())
+file.close()
+
+
+# Display output file
+print("----- Payroll Output -----")
+file = open(output_file, 'r')
+print(file.read())
+file.close()
+
+
+
+
+pg12
+
+from functools import reduce
+
+# Define matrices
+matrix1 = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+matrix2 = [
+    [9, 8, 7],
+    [6, 5, 4],
+    [3, 2, 1]
+]
+
+# Function to display matrix
+def print_matrix(m):
+    for row in m:
+        print(row)
+
+# Lambda functions
+add = lambda A, B: [[A[i][j] + B[i][j] for j in range(3)] for i in range(3)]
+sub = lambda A, B: [[A[i][j] - B[i][j] for j in range(3)] for i in range(3)]
+
+while True:
+    print("\nMENU")
+    print("1.Display Matrices")
+    print("2.Addition")
+    print("3.Subtraction")
+    print("4.Filter Even Numbers")
+    print("5.Sum using reduce()")
+    print("6.Exit")
+
+    choice = input("Enter choice: ")
+
+    if choice == '1':
+        print("Matrix 1:")
+        print_matrix(matrix1)
+
+        print("Matrix 2:")
+        print_matrix(matrix2)
+
+    elif choice == '2':
+        result = add(matrix1, matrix2)
+        print("Addition Result:")
+        print_matrix(result)
+
+    elif choice == '3':
+        result = sub(matrix1, matrix2)
+        print("Subtraction Result:")
+        print_matrix(result)
+
+    elif choice == '4':
+        even = [[x for x in row if x % 2 == 0] for row in matrix1]
+        print("Even numbers from Matrix1:")
+        print_matrix(even)
+
+    elif choice == '5':
+        total = reduce(lambda x, y: x + y, sum(matrix1, []))
+        print("Sum =", total)
+
+    elif choice == '6':
+        print("Program Ended")
+        break
+
+    else:
+        print("Invalid choice")
+
+
+
+
+pg13
+
+import matplotlib.pyplot as plt
+
+# Data
+students = ["A", "B", "C", "D", "E"]
+marks = [65, 80, 75, 90, 70]
+
+# Line Plot
+plt.subplot(2,3,1)
+plt.plot(students, marks)
+plt.title("Line Plot")
+
+# Bar Chart
+plt.subplot(2,3,2)
+plt.bar(students, marks)
+plt.title("Bar Chart")
+
+# Scatter Plot
+plt.subplot(2,3,3)
+plt.scatter(students, marks)
+plt.title("Scatter Plot")
+
+# Histogram
+plt.subplot(2,3,4)
+plt.hist(marks)
+plt.title("Histogram")
+
+# Pie Chart
+plt.subplot(2,3,5)
+plt.pie(marks, labels=students, autopct="%1.1f%%")
+plt.title("Pie Chart")
+
+# Show graphs
+plt.show()
+
+
+
+pg14
+
+from tkinter import *
+from tkinter import messagebox
+
+# function
+def show_details():
+    name = e1.get()
+    qual = e2.get()
+    mobile = e3.get()
+    address = e4.get()
+
+    messagebox.showinfo("Student Details",
+                        "Name: " + name +
+                        "\nQualification: " + qual +
+                        "\nMobile: " + mobile +
+                        "\nAddress: " + address)
+
+# window
+root = Tk()
+root.title("Student Information")
+
+# labels
+Label(root, text="Name").grid(row=0, column=0)
+Label(root, text="Qualification").grid(row=1, column=0)
+Label(root, text="Mobile").grid(row=2, column=0)
+Label(root, text="Address").grid(row=3, column=0)
+
+# entry boxes
+e1 = Entry(root)
+e2 = Entry(root)
+e3 = Entry(root)
+e4 = Entry(root)
+
+e1.grid(row=0, column=1)
+e2.grid(row=1, column=1)
+e3.grid(row=2, column=1)
+e4.grid(row=3, column=1)
+
+# button
+Button(root, text="Display", command=show_details).grid(row=4, columnspan=2)
+
+root.mainloop()
+
+pg15
+
+import pymysql
+
+# connect to database
+conn = pymysql.connect(
+    host="localhost",
+    user="root",
+    password="",
+    database="Company"
+)
+
+cursor = conn.cursor()
+
+# create table
+def create_table():
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS employees(
+        name VARCHAR(50),
+        position VARCHAR(50),
+        salary INT,
+        firm VARCHAR(50)
+    )
+    """)
+    conn.commit()
+    print("Table Created Successfully!")
+
+# insert data
+def add_employee():
+    name = input("Enter name: ")
+    position = input("Enter position: ")
+    salary = int(input("Enter salary: "))
+    firm = input("Enter firm name: ")
+
+    cursor.execute(
+        "INSERT INTO employees VALUES(%s,%s,%s,%s)",
+        (name, position, salary, firm)
+    )
+    conn.commit()
+    print("Employee Added Successfully!")
+
+# display data
+def display_employee():
+    cursor.execute("SELECT * FROM employees")
+    data = cursor.fetchall()
+
+    for row in data:
+        print(row)
+
+# update data
+def update_employee():
+    position = input("Enter position to update salary: ")
+    salary = int(input("Enter new salary: "))
+
+    cursor.execute(
+        "UPDATE employees SET salary=%s WHERE position=%s",
+        (salary, position)
+    )
+    conn.commit()
+    print("Employee Updated Successfully!")
+
+# delete data
+def delete_employee():
+    position = input("Enter position to delete: ")
+
+    cursor.execute(
+        "DELETE FROM employees WHERE position=%s",
+        (position)
+    )
+    conn.commit()
+    print("Employee Deleted Successfully!")
+
+
+# menu program
+while True:
+    print("\n1.Create Table")
+    print("2.Add Employee")
+    print("3.Display Employee")
+    print("4.Update Employee")
+    print("5.Delete Employee")
+    print("6.Exit")
+
+    ch = input("Enter choice: ")
+
+    if ch == '1':
+        create_table()
+
+    elif ch == '2':
+        add_employee()
+
+    elif ch == '3':
+        display_employee()
+
+    elif ch == '4':
+        update_employee()
+
+    elif ch == '5':
+        delete_employee()
+
+    elif ch == '6':
+        print("Program Ended ✅")
+        break
+
+    else:
+        print("Invalid Choice ❌")
+
+conn.close()
+
+
+
