@@ -105,6 +105,51 @@ while True:
     else:
         print("Invalid choice")
 
+pg 4a 
+
+# Function to calculate fare
+def cab_booking(name, pickup, drop, distance, cab_type):
+
+    if cab_type == 1:
+        rate = 10
+        cab = "Mini"
+    elif cab_type == 2:
+        rate = 15
+        cab = "Sedan"
+    elif cab_type == 3:
+        rate = 20
+        cab = "SUV"
+    else:
+        print("Invalid cab type selected!")
+        return
+
+    fare = distance * rate
+
+    print("\n----- CAB BOOKING DETAILS -----")
+    print("User Name:", name)
+    print("Pickup Point:", pickup)
+    print("Drop Point:", drop)
+    print("Cab Type:", cab)
+    print("Distance:", distance, "km")
+    print("Total Fare: ₹", fare)
+
+
+# Main program
+name = input("Enter your name: ")
+pickup = input("Enter pickup point: ")
+drop = input("Enter drop point: ")
+distance = int(input("Enter distance (km): "))
+
+print("\nAvailable Cab Types")
+print("1. Mini  ₹10/km")
+print("2. Sedan ₹15/km")
+print("3. SUV   ₹20/km")
+
+cab_type = int(input("Select cab type (1/2/3): "))
+
+# Function call
+cab_booking(name, pickup, drop, distance, cab_type)
+
 
 pg 4c
 
