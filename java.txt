@@ -1,0 +1,761 @@
+tcp server
+
+import java.net.*;
+import java.io.*;
+
+public class Server {
+    public static void main(String[] args) throws Exception {
+        ServerSocket ss = new ServerSocket(1234);
+        System.out.println("Waiting for client...");
+
+        Socket s = ss.accept();
+        System.out.println("Client connected");
+
+        DataInputStream dis = new DataInputStream(s.getInputStream());
+        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String msg = "", reply = "";
+
+        while (!msg.equals("exit")) {
+            msg = dis.readUTF();
+            System.out.println("Client: " + msg);
+
+            reply = br.readLine();
+            dos.writeUTF(reply);
+        }
+
+        s.close();
+        ss.close();
+    }
+}
+
+
+client
+
+import java.net.*;
+import java.io.*;
+
+public class Client {
+    public static void main(String[] args) throws Exception {
+        Socket s = new Socket("localhost", 1234);
+
+        DataInputStream dis = new DataInputStream(s.getInputStream());
+        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String msg = "", reply = "";
+
+        while (!msg.equals("exit")) {
+            msg = br.readLine();
+            dos.writeUTF(msg);
+
+            reply = dis.readUTF();
+            System.out.println("Server: " + reply);
+        }
+
+        s.close();
+    }
+}
+
+
+
+
+
+
+pg2
+udp server
+
+import java.net.*;
+
+public class UDPServer {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket ds = new DatagramSocket(1234);
+        byte[] receive = new byte[1024];
+
+        System.out.println("Server is running...");
+
+        // Receive message
+        DatagramPacket dp = new DatagramPacket(receive, receive.length);
+        ds.receive(dp);
+
+        String msg = new String(dp.getData(), 0, dp.getLength());
+        System.out.println("Client: " + msg);
+
+        // Send reply
+        String reply = "Hello from Server";
+        byte[] send = reply.getBytes();
+
+        DatagramPacket dp2 = new DatagramPacket(
+            send, send.length, dp.getAddress(), dp.getPort()
+        );
+        ds.send(dp2);
+
+        ds.close();
+    }
+}
+
+
+client
+
+import java.net.*;
+
+public class UDPClient {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket ds = new DatagramSocket();
+
+        // Send message
+        String msg = "Hello Server";
+        byte[] send = msg.getBytes();
+
+        InetAddress ip = InetAddress.getByName("localhost");
+
+        DatagramPacket dp = new DatagramPacket(send, send.length, ip, 1234);
+        ds.send(dp);
+
+        // Receive reply
+        byte[] receive = new byte[1024];
+        DatagramPacket dp2 = new DatagramPacket(receive, receive.length);
+        ds.receive(dp2);
+
+        String reply = new String(dp2.getData(), 0, dp2.getLength());
+        System.out.println("Server: " + reply);
+
+        ds.close();
+    }
+}
+
+
+
+
+
+pg3
+
+Interface
+import java.rmi.*;
+
+public interface Add extends Remote {
+    int add(int a, int b) throws RemoteException;
+}
+
+server
+
+import java.rmi.*;
+import java.rmi.registry.*;
+import java.rmi.server.*;
+
+public class AddServer extends UnicastRemoteObject implements Add {
+
+    AddServer() throws RemoteException {}
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public static void main(String[] args) throws Exception {
+        AddServer obj = new AddServer();
+        LocateRegistry.createRegistry(1099);
+        Naming.rebind("add", obj);
+        System.out.println("Server ready...");
+    }
+}
+
+client
+
+import java.rmi.*;
+
+public class AddClient {
+    public static void main(String[] args) throws Exception {
+        Add obj = (Add) Naming.lookup("rmi://localhost/add");
+        int result = obj.add(5, 3);
+        System.out.println("Sum = " + result);
+    }
+}
+
+
+
+
+
+pg4
+
+import javax.swing.*;
+import java.awt.event.*;
+
+public class Form {
+    public static void main(String[] args) {
+        JFrame f = new JFrame("Registration Form");
+
+        JLabel l1 = new JLabel("Name:");
+        l1.setBounds(50, 50, 100, 30);
+        JTextField t1 = new JTextField();
+        t1.setBounds(150, 50, 150, 30);
+
+        JLabel l2 = new JLabel("DOB:");
+        l2.setBounds(50, 90, 100, 30);
+        JTextField t2 = new JTextField();
+        t2.setBounds(150, 90, 150, 30);
+
+        JLabel l3 = new JLabel("Gender:");
+        l3.setBounds(50, 130, 100, 30);
+        JRadioButton r1 = new JRadioButton("Male");
+        r1.setBounds(150, 130, 70, 30);
+        JRadioButton r2 = new JRadioButton("Female");
+        r2.setBounds(220, 130, 80, 30);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(r1); bg.add(r2);
+
+        JLabel l4 = new JLabel("Degree:");
+        l4.setBounds(50, 170, 100, 30);
+        String deg[] = {"BSc", "BCA", "BCom"};
+        JComboBox cb = new JComboBox(deg);
+        cb.setBounds(150, 170, 150, 30);
+
+        JLabel l5 = new JLabel("Course:");
+        l5.setBounds(50, 210, 100, 30);
+        JTextField t3 = new JTextField();
+        t3.setBounds(150, 210, 150, 30);
+
+        JLabel l6 = new JLabel("Address:");
+        l6.setBounds(50, 250, 100, 30);
+        JTextArea ta = new JTextArea();
+        ta.setBounds(150, 250, 150, 60);
+
+        JButton b = new JButton("Submit");
+        b.setBounds(120, 330, 100, 30);
+
+        f.add(l1); f.add(t1);
+        f.add(l2); f.add(t2);
+        f.add(l3); f.add(r1); f.add(r2);
+        f.add(l4); f.add(cb);
+        f.add(l5); f.add(t3);
+        f.add(l6); f.add(ta);
+        f.add(b);
+
+        f.setSize(400, 450);
+        f.setLayout(null);
+        f.setVisible(true);
+    }
+}
+
+
+
+
+
+
+pg5
+MySQL
+
+CREATE TABLE student (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+import java.sql.*;
+import java.util.*;
+
+public class CRUD {
+    public static void main(String[] args) throws Exception {
+
+        Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/test", "root", "root");
+
+        Statement st = con.createStatement();
+        Scanner sc = new Scanner(System.in);
+
+        int ch;
+
+        do {
+            System.out.println("\n1.Display 2.Add 3.Update 4.Delete 5.Exit");
+            ch = sc.nextInt();
+
+            switch (ch) {
+
+                case 1:
+                    ResultSet rs = st.executeQuery("SELECT * FROM student");
+                    while (rs.next()) {
+                        System.out.println(rs.getInt(1) + " " + rs.getString(2));
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter id & name: ");
+                    int id = sc.nextInt();
+                    String name = sc.next();
+                    st.executeUpdate("INSERT INTO student VALUES(" + id + ",'" + name + "')");
+                    System.out.println("Inserted");
+                    break;
+
+                case 3:
+                    System.out.print("Enter id to update: ");
+                    int uid = sc.nextInt();
+                    System.out.print("Enter new name: ");
+                    String uname = sc.next();
+                    st.executeUpdate("UPDATE student SET name='" + uname + "' WHERE id=" + uid);
+                    System.out.println("Updated");
+                    break;
+
+                case 4:
+                    System.out.print("Enter id to delete: ");
+                    int did = sc.nextInt();
+                    st.executeUpdate("DELETE FROM student WHERE id=" + did);
+                    System.out.println("Deleted");
+                    break;
+            }
+
+        } while (ch != 5);
+
+        con.close();
+    }
+}
+
+
+
+
+
+
+pg6
+
+<%@ page language="java" %>
+<html>
+<body>
+
+<form method="post">
+    Enter Number 1: <input type="text" name="n1"><br>
+    Enter Number 2: <input type="text" name="n2"><br>
+
+    <select name="op">
+        <option value="add">Add</option>
+        <option value="sub">Subtract</option>
+        <option value="mul">Multiply</option>
+        <option value="div">Divide</option>
+    </select>
+
+    <input type="submit" value="Calculate">
+</form>
+
+<%
+if(request.getParameter("n1") != null){
+    int a = Integer.parseInt(request.getParameter("n1"));
+    int b = Integer.parseInt(request.getParameter("n2"));
+    String op = request.getParameter("op");
+    int result = 0;
+
+    if(op.equals("add")) result = a + b;
+    else if(op.equals("sub")) result = a - b;
+    else if(op.equals("mul")) result = a * b;
+    else if(op.equals("div")) result = a / b;
+
+    out.println("Result = " + result);
+}
+%>
+
+</body>
+</html>
+
+
+
+
+
+pg7
+
+import java.util.*;
+
+public class ArrayListDemo {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        int ch;
+
+        do {
+            System.out.println("\n1.Display 2.Add 3.Search 4.Remove 5.Exit");
+            ch = sc.nextInt();
+            sc.nextLine();
+
+            switch(ch) {
+                case 1:
+                    System.out.println(list);
+                    break;
+
+                case 2:
+                    System.out.print("Enter name: ");
+                    list.add(sc.nextLine());
+                    break;
+
+                case 3:
+                    System.out.print("Enter name: ");
+                    String s = sc.nextLine();
+                    if(list.contains(s)) System.out.println("Found");
+                    else System.out.println("Not Found");
+                    break;
+
+                case 4:
+                    System.out.print("Enter name: ");
+                    list.remove(sc.nextLine());
+                    break;
+            }
+        } while(ch != 5);
+    }
+}
+
+
+
+
+
+pg8
+
+import java.util.*;
+
+public class TreeSetDemo {
+    public static void main(String[] args) {
+        TreeSet<Integer> ts = new TreeSet<>();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter 5 numbers:");
+
+        for(int i=0; i<5; i++) {
+            ts.add(sc.nextInt());
+        }
+
+        System.out.println("Sorted Elements: " + ts);
+    }
+}
+
+
+
+
+pg9
+java 
+
+import javax.servlet.jsp.tagext.*;
+import javax.servlet.jsp.*;
+import java.io.*;
+
+public class HelloTag extends TagSupport {
+    public int doStartTag() throws JspException {
+        try {
+            pageContext.getOut().println("Hello Custom Tag!");
+        } catch(Exception e) {}
+        return SKIP_BODY;
+    }
+}
+
+xml
+
+<taglib>
+  <tag>
+    <name>hello</name>
+    <tag-class>HelloTag</tag-class>
+    <body-content>empty</body-content>
+  </tag>
+</taglib>
+
+jsp
+
+<%@ taglib uri="hello.tld" prefix="h" %>
+<h:hello/>
+
+
+
+
+pg 10
+MySQL
+
+CREATE TABLE student (
+    id INT,
+    name VARCHAR(50),
+    email VARCHAR(50),
+    course VARCHAR(50)
+);
+
+
+
+index
+
+<%@ page import="java.sql.*" %>
+<html>
+<body>
+
+<h3>Student Form</h3>
+
+<form method="post">
+    ID: <input type="text" name="id"><br>
+    Name: <input type="text" name="name"><br>
+    Email: <input type="text" name="email"><br>
+    Course: <input type="text" name="course"><br>
+    <input type="submit" value="Add">
+</form>
+
+<%
+if(request.getParameter("id") != null){
+    try {
+        Connection con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/test","root","root");
+
+        PreparedStatement ps = con.prepareStatement(
+        "insert into student values(?,?,?,?)");
+
+        ps.setInt(1, Integer.parseInt(request.getParameter("id")));
+        ps.setString(2, request.getParameter("name"));
+        ps.setString(3, request.getParameter("email"));
+        ps.setString(4, request.getParameter("course"));
+
+        ps.executeUpdate();
+
+        out.println("<h3>Inserted</h3>");
+
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery("select * from student");
+
+        while(rs.next()){
+            out.println(rs.getInt(1) + " "
+            + rs.getString(2) + " "
+            + rs.getString(3) + " "
+            + rs.getString(4) + "<br>");
+        }
+
+        con.close();
+    } catch(Exception e){
+        out.println(e);
+    }
+}
+%>
+
+</body>
+</html>
+
+
+
+
+pg11
+index
+
+<form action="library" method="post">
+    Book ID: <input type="text" name="id"><br>
+    Book Name: <input type="text" name="name"><br>
+    No of Copies: <input type="text" name="copies"><br>
+    <input type="submit" value="Submit">
+</form>
+
+LibraryServlet.java
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LibraryServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+    throws ServletException, IOException {
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        String id = req.getParameter("id");
+        String name = req.getParameter("name");
+        String copies = req.getParameter("copies");
+
+        out.println("<h3>Book Details (GET)</h3>");
+        out.println("ID: " + id + "<br>Name: " + name + "<br>Copies: " + copies);
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    throws ServletException, IOException {
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        String id = req.getParameter("id");
+        String name = req.getParameter("name");
+        String copies = req.getParameter("copies");
+
+        out.println("<h3>Book Details (POST)</h3>");
+        out.println("ID: " + id + "<br>Name: " + name + "<br>Copies: " + copies);
+    }
+}
+
+
+
+
+
+
+pg12
+index
+
+<form action="cookie" method="post">
+    Name: <input type="text" name="name"><br>
+    Age: <input type="text" name="age"><br>
+    Email: <input type="text" name="email"><br>
+    <input type="submit">
+</form>
+
+CookieServlet.java
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class CookieServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    throws IOException {
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        Cookie c1 = new Cookie("name", req.getParameter("name"));
+        Cookie c2 = new Cookie("age", req.getParameter("age"));
+        Cookie c3 = new Cookie("email", req.getParameter("email"));
+
+        res.addCookie(c1);
+        res.addCookie(c2);
+        res.addCookie(c3);
+
+        out.println("<h3>Cookies Stored</h3>");
+
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                out.println(c.getName() + " : " + c.getValue() + "<br>");
+            }
+        }
+    }
+}
+
+
+
+
+
+
+pg13
+index
+
+<form action="session" method="post">
+    Name: <input type="text" name="name"><br>
+    Age: <input type="text" name="age"><br>
+    Email: <input type="text" name="email"><br>
+    <input type="submit">
+</form>
+
+SessionServlet.java
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SessionServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    throws IOException {
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        HttpSession session = req.getSession();
+
+        session.setAttribute("name", req.getParameter("name"));
+        session.setAttribute("age", req.getParameter("age"));
+        session.setAttribute("email", req.getParameter("email"));
+
+        out.println("<h3>Session Data</h3>");
+        out.println("Name: " + session.getAttribute("name") + "<br>");
+        out.println("Age: " + session.getAttribute("age") + "<br>");
+        out.println("Email: " + session.getAttribute("email"));
+    }
+}
+
+
+
+
+
+pg14
+index
+
+<form action="emp" method="post">
+    ID: <input type="text" name="id"><br>
+    Name: <input type="text" name="name"><br>
+    Age: <input type="text" name="age"><br>
+    Salary: <input type="text" name="salary"><br>
+    <input type="submit">
+</form>
+
+EmpServlet.java
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.sql.*;
+
+public class EmpServlet extends HttpServlet {
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+    throws IOException {
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        try {
+            Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/test","root","root");
+
+            PreparedStatement ps = con.prepareStatement(
+            "insert into emp values(?,?,?,?)");
+
+            ps.setInt(1, Integer.parseInt(req.getParameter("id")));
+            ps.setString(2, req.getParameter("name"));
+            ps.setInt(3, Integer.parseInt(req.getParameter("age")));
+            ps.setInt(4, Integer.parseInt(req.getParameter("salary")));
+
+            ps.executeUpdate();
+
+            out.println("Inserted Successfully");
+
+            con.close();
+        } catch(Exception e) {
+            out.println(e);
+        }
+    }
+}
+
+
+
+
+
+ pg15
+UserBean.java
+
+import java.io.*;
+
+public class UserBean implements Serializable {
+    private String name;
+    private String email;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}
+
+
+jsp
+
+<jsp:useBean id="u" class="UserBean" scope="session"/>
+
+<jsp:setProperty name="u" property="name" value="John"/>
+<jsp:setProperty name="u" property="email" value="john@gmail.com"/>
+
+Name: <jsp:getProperty name="u" property="name"/><br>
+Email: <jsp:getProperty name="u" property="email"/>
+
