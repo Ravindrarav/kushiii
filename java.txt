@@ -1,32 +1,22 @@
 tcp server
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
 public class Server {
-    public static void main(String[] args) throws Exception {
+    public static void main(String args[]) throws Exception {
         ServerSocket ss = new ServerSocket(1234);
-        System.out.println("Waiting for client...");
+        System.out.println("Server Started...");
 
         Socket s = ss.accept();
-        System.out.println("Client connected");
+        System.out.println("Client Connected");
 
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(s.getInputStream()));
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String msg = br.readLine();
+        System.out.println("Client says: " + msg);
 
-        String msg = "", reply = "";
-
-        while (!msg.equals("exit")) {
-            msg = dis.readUTF();
-            System.out.println("Client: " + msg);
-
-            reply = br.readLine();
-            dos.writeUTF(reply);
-        }
-
-        s.close();
         ss.close();
     }
 }
@@ -34,32 +24,26 @@ public class Server {
 
 client
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class Client {
-    public static void main(String[] args) throws Exception {
+    public static void main(String args[]) throws Exception {
         Socket s = new Socket("localhost", 1234);
 
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+        DataOutputStream dout =
+                new DataOutputStream(s.getOutputStream());
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine();
 
-        String msg = "", reply = "";
-
-        while (!msg.equals("exit")) {
-            msg = br.readLine();
-            dos.writeUTF(msg);
-
-            reply = dis.readUTF();
-            System.out.println("Server: " + reply);
-        }
+        dout.writeBytes(msg + "\n");
 
         s.close();
     }
 }
-
 
 
 
@@ -70,63 +54,57 @@ udp server
 
 import java.net.*;
 
+import java.net.*;
+
 public class UDPServer {
-    public static void main(String[] args) throws Exception {
+    public static void main(String args[]) throws Exception {
+
         DatagramSocket ds = new DatagramSocket(1234);
-        byte[] receive = new byte[1024];
 
-        System.out.println("Server is running...");
+        byte[] b = new byte[1024];
 
-        // Receive message
-        DatagramPacket dp = new DatagramPacket(receive, receive.length);
+        DatagramPacket dp =
+                new DatagramPacket(b, b.length);
+
         ds.receive(dp);
 
-        String msg = new String(dp.getData(), 0, dp.getLength());
-        System.out.println("Client: " + msg);
+        String msg = new String(dp.getData());
 
-        // Send reply
-        String reply = "Hello from Server";
-        byte[] send = reply.getBytes();
-
-        DatagramPacket dp2 = new DatagramPacket(
-            send, send.length, dp.getAddress(), dp.getPort()
-        );
-        ds.send(dp2);
+        System.out.println("Client says: " + msg);
 
         ds.close();
     }
 }
+
 
 
 client
 
 import java.net.*;
+import java.util.*;
 
 public class UDPClient {
-    public static void main(String[] args) throws Exception {
+    public static void main(String args[]) throws Exception {
+
         DatagramSocket ds = new DatagramSocket();
 
-        // Send message
-        String msg = "Hello Server";
-        byte[] send = msg.getBytes();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine();
+
+        byte[] b = msg.getBytes();
 
         InetAddress ip = InetAddress.getByName("localhost");
 
-        DatagramPacket dp = new DatagramPacket(send, send.length, ip, 1234);
+        DatagramPacket dp =
+                new DatagramPacket(b, b.length, ip, 1234);
+
         ds.send(dp);
-
-        // Receive reply
-        byte[] receive = new byte[1024];
-        DatagramPacket dp2 = new DatagramPacket(receive, receive.length);
-        ds.receive(dp2);
-
-        String reply = new String(dp2.getData(), 0, dp2.getLength());
-        System.out.println("Server: " + reply);
 
         ds.close();
     }
 }
-
 
 
 
