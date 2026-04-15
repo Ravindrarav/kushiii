@@ -385,21 +385,36 @@ pg8
 
 import java.util.*;
 
-public class TreeSetDemo {
-    public static void main(String[] args) {
-        TreeSet<Integer> ts = new TreeSet<>();
+public class TreeSetExample
+{
+    public static void main(String args[])
+    {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Enter 5 numbers:");
+        TreeSet<Integer> numbers = new TreeSet<Integer>();
 
-        for(int i=0; i<5; i++) {
-            ts.add(sc.nextInt());
+        System.out.print("Enter how many numbers: ");
+        int n = sc.nextInt();
+
+        System.out.println("Enter the numbers:");
+
+        for(int i = 0; i < n; i++)
+        {
+            numbers.add(sc.nextInt());
         }
 
-        System.out.println("Sorted Elements: " + ts);
+       
+        System.out.println("Sorted values: " + numbers);
+        System.out.println("Lowest value: " + numbers.first());
+        System.out.println("Highest value: " + numbers.last());
+        
+        ArrayList<Integer> list = new ArrayList<>(numbers);
+
+        int middleIndex = list.size() / 2;
+
+        System.out.println("Middle value: " + list.get(middleIndex));
     }
 }
-
 
 
 
