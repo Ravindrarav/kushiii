@@ -74,52 +74,65 @@ done
 
 pg2 
 
-#!/bin/bash
+echo "File Operations Menu"
 
-echo "1.Copy  2.Rename  3.Remove  4.Sort  5.Exit"
-read ch
+while true
+do
+    echo "-----------------------------"
+    echo "1.Copy  2.Rename  3.Remove  4.Sort  5.Exit"
+    read ch
 
-case $ch in
-1)
-    echo "Enter source file:"
-    read f1
-    echo "Enter destination file:"
-    read f2
-    cp $f1 $f2
-    echo "Copied"
-    ;;
+    case $ch in
+    1)
+        echo "Enter source file:"
+        read f1
+        echo "Enter destination file:"
+        read f2
+        cp $f1 $f2
+        echo "Copied"
+        ;;
 
-2)
-    echo "Enter old name:"
-    read f1
-    echo "Enter new name:"
-    read f2
-    mv $f1 $f2
-    echo "Renamed"
-    ;;
+    2)
+        echo "Enter old name:"
+        read f1
+        echo "Enter new name:"
+        read f2
+        mv $f1 $f2
+        echo "Renamed"
+        ;;
 
-3)
-    echo "Enter file to delete:"
-    read f1
-    rm $f1
-    echo "Removed"
-    ;;
+    3)
+        echo "Enter file to delete:"
+        read f1
+        rm $f1
+        echo "Removed"
+        ;;
 
-4)
-    echo "Enter file to sort:"
-    read f1
-    sort $f1
-    ;;
+    4)
+        echo "Enter file to sort:"
+        read f1
+        sort $f1
+        ;;
 
-5)
-    exit
-    ;;
+    5)
+        echo "Exiting..."
+        exit
+        ;;
 
-*)
-    echo "Invalid choice"
-    ;;
-esac
+    *)
+        echo "Invalid choice"
+        ;;
+    esac
 
+    echo "Do you want to continue? (yes/no)"
+    read ans
+
+    if [ "$ans" != "yes" ]; then
+        echo "Program terminated."
+        break
+    fi
+
+done
 
 
 
