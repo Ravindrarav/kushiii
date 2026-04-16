@@ -1,60 +1,74 @@
 pg1
 
 echo "Linux Utility Commands Demonstration"
-echo "1. Logged in user"
-echo "2. Display calendar"
-echo "3. Display current date"
-echo "4. Display manual"
-echo "5. Display current directory"
-echo "6. Display disk free space"
-echo "7. Exit"
 
-echo "Enter your choice:"
-read choice
+while true
+do
+    echo "-----------------------------"
+    echo "1. Logged in user"
+    echo "2. Display calendar"
+    echo "3. Display current date"
+    echo "4. Display manual"
+    echo "5. Display current directory"
+    echo "6. Display disk free space"
+    echo "7. Exit"
+    
+    echo "Enter your choice:"
+    read choice
 
-case $choice in
+    case $choice in
 
-1)
-echo "Logged in user:"
-whoami
-;;
+    1)
+    echo "Logged in user:"
+    whoami
+    ;;
 
-2)
-echo "Calendar:"
-cal
-;;
+    2)
+    echo "Calendar:"
+    cal
+    ;;
 
-3)
-echo "Current date:"
-date
-;;
+    3)
+    echo "Current date:"
+    date
+    ;;
 
-4)
-echo "Enter command name to view manual:"
-read cmd
-man $cmd
-;;
+    4)
+    echo "Enter command name to view manual:"
+    read cmd
+    man $cmd
+    ;;
 
-5)
-echo "Current directory:"
-pwd
-;;
+    5)
+    echo "Current directory:"
+    pwd
+    ;;
 
-6)
-echo "Disk free space:"
-df -h
-;;
+    6)
+    echo "Disk free space:"
+    df -h
+    ;;
 
-7)
-echo "Exiting program..."
-exit
-;;
+    7)
+    echo "Exiting program..."
+    exit
+    ;;
 
-*)
-echo "Invalid choice"
-;;
+    *)
+    echo "Invalid choice"
+    ;;
 
-esac
+    esac
+
+    echo "Do you want to continue? (yes/no)"
+    read answer
+
+    if [ "$answer" != "yes" ]; then
+        echo "Program terminated."
+        break
+    fi
+
+done
 
 
 
